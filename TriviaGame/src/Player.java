@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 import javafx.application.Application;
@@ -23,66 +24,54 @@ import javafx.stage.Stage;
 public class Player extends Application{
 	
 	public int ansCho = 0;
-	public String sui = null;
 	public String butOne ="Button";// getAnswer(1);
 	public String butTwo = "Button";// getAnswer(2);
 	public String butThree ="Button"; //getAnswer(3);
 	public String butFour = "Button";//getAnswer(4);
-	public String question = sui;
+	public String question = null;
 	Socket s;
 	DataInputStream din;
 	DataOutputStream dout;
 	
-	
-	
-	public static void main(String args[]) {
-		launch(args);
-        new Player(); 
 
-	}
 	
-	public Player()
-	    {
-		/*/
-		 * gets connection and sets data in and out ans data stream
-		 * was working 
-		 */
-	         try
-	         {
-	             String serverName = "10.200.20.218";
-	             s=new Socket(serverName,1242 );
-	             System.out.println(s);
-	             din= new DataInputStream(s.getInputStream());
-	             dout= new DataOutputStream(s.getOutputStream());
-	             sui = din.toString();
-	             System.out.print(sui);
-	         }
-	         catch(Exception e)
-	         {
-	             System.out.println(e);
-	         }
-	     }
-	
-	public void ClientChat() throws IOException
-	     {
-		/*/
-		 * gets the answer that the client choices and sends it down to server as in
-		 * not working 
-		 */
-		
-		BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
-	           String s1;
-	           do
-	           {
-	        	   
-	               s1=br.readLine();
-	               dout.write(ansCho);
-	               dout.flush();
-	               System.out.println("Server Message:"+din.readUTF());
-	           }
-	           while(!s1.equals("stop"));
-	    }	
-	
+    public Player() {
+         try {
+             String serverName = "10.200.240.150";
+             s=new Socket(serverName,2114);
+             System.out.println(s);
+             din= new DataInputStream(s.getInputStream());
+             dout= new DataOutputStream(s.getOutputStream());
+             ClientChat();
+         }
+         catch(Exception e){
+             System.out.println(e);
+         }
+     }
+     @SuppressWarnings("null")
+	public void ClientChat() throws IOException{
+           BufferedReader read= new BufferedReader(new InputStreamReader(din));
+           String receiveMessage = read.readLine();
+           
+           do {
+        	   if(receiveMessage != null) {
+        		   question = receiveMessage.substring(2);
+        		   butOne = read.readLine();
+        		   butTwo = read.readLine();
+        		   butThree = read.readLine();
+        		   butFour = read.readLine();
+        	   }else System.out.println("failed");
+              /* here is where code will go that will allow
+               * a user to click a button representing their
+               * answer. Send message will be button click.
+               */
+        	   dout.write(ansCho);
+        	   dout.flush();
+        	   //what do do once a choice is made
+           }
+           while(!read.equals("stop"));
+    }
+  
 	
 	public void start(Stage primaryStage) throws Exception {
 		/*/
@@ -181,5 +170,9 @@ public class Player extends Application{
 		primaryStage.show();
 		
 	}
-		
+	
+	public static void main(String args[]) {
+        launch(args);
+		new Player(); 
+	}	
 }
