@@ -51,16 +51,13 @@ public class Player extends Application{
      @SuppressWarnings("null")
 	public void ClientChat() throws IOException{
            BufferedReader read= new BufferedReader(new InputStreamReader(din));
-           String receiveMessage = read.readLine();
-           
-           do {
-        	   if(receiveMessage != null) {
+          String receiveMessage;           
+           while((receiveMessage = read.readLine())!= null) {
         		   question = receiveMessage.substring(2);
-        		   butOne = read.readLine();
-        		   butTwo = read.readLine();
-        		   butThree = read.readLine();
-        		   butFour = read.readLine();
-        	   }else System.out.println("failed");
+        		   butOne = receiveMessage.substring(2);
+        		   butTwo = receiveMessage.substring(2);
+        		   butThree = receiveMessage.substring(2);
+        		   butFour = receiveMessage.substring(2);
               /* here is where code will go that will allow
                * a user to click a button representing their
                * answer. Send message will be button click.
@@ -68,8 +65,7 @@ public class Player extends Application{
         	   dout.write(ansCho);
         	   dout.flush();
         	   //what do do once a choice is made
-           }
-           while(!read.equals("stop"));
+           }  
     }
   
 	
