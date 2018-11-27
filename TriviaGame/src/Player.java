@@ -56,10 +56,7 @@ public class Player extends Application{
      @SuppressWarnings("null")
 	public void ClientChat() throws IOException{
           BufferedReader read= new BufferedReader(new InputStreamReader(din));
-          // BufferedWriter write = new BufferedWriter(new OutputStreamWriter(dout));
-          // String receiveMessage = din.readUTF().toString();//.replace('#', '\n'); 
-          // System.out.println(receiveMessage);
-		   //String l = din.readUTF();
+          
           for(int i=ques.length-1;i>0;i--) {
         	  r[i]=din.readUTF().replace('#', '\n');
           }
@@ -128,12 +125,18 @@ public class Player extends Application{
 		
 		queTwo.setOnAction(e->{
 			   ansCho="2";
+			   if(score1 == 3) {
+					ask.setText("Congradulations you got all the right answers");
+					ans = "1";
+				}
 			   if(ans.equals(ansCho)) {
 				   score1++;
     			   disScore.setText(new Integer(score1).toString());
     			   num = num-1;
     			   ask.setText(r[num].substring(p+1).replace("$", ""));						//sets the next question
     			   ans = r[num].substring(p, p+1).toString();
+
+    				
         	   }
 	          
 		});		
@@ -166,6 +169,7 @@ public class Player extends Application{
 	           
 		});			
 		grid.add(queFour, 3, 3);
+		
 		
 		Scene scene = new Scene(grid);
 		primaryStage.setResizable(false);
