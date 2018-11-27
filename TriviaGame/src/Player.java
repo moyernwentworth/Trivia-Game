@@ -25,21 +25,25 @@ public class Player extends Application{
 	public String butTwo = "B";// getAnswer(2);
 	public String butThree ="C"; //getAnswer(3);
 	public String butFour = "D";//getAnswer(4);
-	public String question = null;
-	public String[] ques;
+	public static String question;
+	public String[] ques = new String[5];
+	public String[] answ = new String[ques.length];
+	public String ans;
+	public int num = 4;
+
 	Socket s;
 	DataInputStream din;
 	DataOutputStream dout;
-	String ans;
+	
     int p=0;
-    String[] r = new String[10];
+    String[] r = new String[ques.length];
     int w = 5;
 
 	
     public Player() {
          try {
              String serverName = "10.200.95.214";
-             s=new Socket(serverName,1219);
+             s=new Socket(serverName,2000);
              System.out.println(s);
              din= new DataInputStream(s.getInputStream());
              dout= new DataOutputStream(s.getOutputStream());
@@ -56,16 +60,17 @@ public class Player extends Application{
           // String receiveMessage = din.readUTF().toString();//.replace('#', '\n'); 
           // System.out.println(receiveMessage);
 		   //String l = din.readUTF();
-           for(int i=5;i>=0;) {
-        	   r[i]=din.readUTF().replace('#', '\n');
-        	   int h = r[i].indexOf('$');
-        	   System.out.print(r[i]);
-        	   question = r[i].substring(p+1,h);
-        	   ans = r[i].substring(p, p+1);
-        	   i--;
-           }
+          for(int i=ques.length-1;i>0;i--) {
+        	  r[i]=din.readUTF().replace('#', '\n');
+          }
+          question = r[4].substring(p+1).replace("$", "");
+          ans = r[4].substring(p, p+1).toString();
           
-    }
+          for(int n = r.length-1 ; n > 0; n--) {
+        	 System.out.print("r["+n+"] is : "+r[n]); 
+          } 	  
+      
+     }
   
 	
 	public void start(Stage primaryStage) throws Exception {
@@ -79,7 +84,7 @@ public class Player extends Application{
 		grid.setGridLinesVisible(false);
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(75);
-		grid.setVgap(20);
+		grid.setVgap(5);
 		
 		Text scenetitle = new Text("Trivia!");
 		scenetitle.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 30));
@@ -105,15 +110,15 @@ public class Player extends Application{
 		Button queTwo = new Button(butTwo);
 		Button queThree = new Button(butThree);
 		Button queFour = new Button(butFour);
-
+		
 		queOne.setOnAction(e->{
 			   ansCho="1";
 			   if(ans.equals(ansCho)) {
 				   score1++;
-        		   System.out.println("wooo");
     			   disScore.setText(new Integer(score1).toString());
-    			   ask.setText(question);
-    			   w--;
+    			   num = num-1;
+    			   ask.setText(r[num].substring(p+1).replace("$", ""));							//sets the next question
+    			   ans = r[num-1].substring(p, p+1).toString();
         	   }
 
 		});	
@@ -125,10 +130,10 @@ public class Player extends Application{
 			   ansCho="2";
 			   if(ans.equals(ansCho)) {
 				   score1++;
-        		   System.out.println("wooo");
     			   disScore.setText(new Integer(score1).toString());
-    			   ask.setText(question);
-    			   w--;
+    			   num = num-1;
+    			   ask.setText(r[num].substring(p+1).replace("$", ""));						//sets the next question
+    			   ans = r[num].substring(p, p+1).toString();
         	   }
 	          
 		});		
@@ -138,10 +143,10 @@ public class Player extends Application{
 			   ansCho="3";
 			   if(ans.equals(ansCho)) {
 				   score1++;
-        		   System.out.println("wooo");
     			   disScore.setText(new Integer(score1).toString());
-    			   ask.setText(question);
-    			   w--;
+    			   num = num-1;
+    			   ask.setText(r[num].substring(p+1).replace("$", ""));
+    			   ans = r[num].substring(p, p+1).toString();
         	   }
 	          
 		});			
@@ -154,22 +159,13 @@ public class Player extends Application{
 				   score1++;
         		   System.out.println("wooo");
     			   disScore.setText(new Integer(score1).toString());
-    			   ask.setText(question);
-    			   w--;
+    			   num = num-1;
+    			   ask.setText(r[num].substring(p+1).replace("$", ""));
+    			   ans = r[num].substring(p, p+1).toString();
         	   }
 	           
 		});			
 		grid.add(queFour, 3, 3);
-		
-		
-		try {
-			if(ansCho!="0") {
-				ClientChat();
-			  }
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		
 		Scene scene = new Scene(grid);
 		primaryStage.setResizable(false);
