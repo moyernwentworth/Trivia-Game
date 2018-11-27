@@ -110,13 +110,22 @@ public class Player extends Application{
 		
 		queOne.setOnAction(e->{
 			   ansCho="1";
+			   if(score1 == 3) {
+					ask.setText("Congradulations you got all the right answers");
+					ans = "2";
+				}
 			   if(ans.equals(ansCho)) {
 				   score1++;
     			   disScore.setText(new Integer(score1).toString());
     			   num = num-1;
     			   ask.setText(r[num].substring(p+1).replace("$", ""));							//sets the next question
     			   ans = r[num-1].substring(p, p+1).toString();
+        	   }else {
+        		   num = num-1;
+    			   ask.setText(r[num].substring(p+1).replace("$", ""));
+    			   ans = r[num].substring(p, p+1).toString();
         	   }
+	          
 
 		});	
 		
@@ -135,19 +144,30 @@ public class Player extends Application{
     			   num = num-1;
     			   ask.setText(r[num].substring(p+1).replace("$", ""));						//sets the next question
     			   ans = r[num].substring(p, p+1).toString();
-
-    				
+        	   }else {
+        		   num = num-1;
+    			   ask.setText(r[num].substring(p+1).replace("$", ""));
+    			   ans = r[num].substring(p, p+1).toString();
         	   }
+	          
 	          
 		});		
 		grid.add(queTwo, 1, 3);
 		
 		queThree.setOnAction(e->{
 			   ansCho="3";
+			   if(score1 == 3) {
+					ask.setText("Congradulations you got all the right answers");
+					ans = "1";
+				}
 			   if(ans.equals(ansCho)) {
 				   score1++;
     			   disScore.setText(new Integer(score1).toString());
     			   num = num-1;
+    			   ask.setText(r[num].substring(p+1).replace("$", ""));
+    			   ans = r[num].substring(p, p+1).toString();
+        	   }else {
+        		   num = num-1;
     			   ask.setText(r[num].substring(p+1).replace("$", ""));
     			   ans = r[num].substring(p, p+1).toString();
         	   }
@@ -157,15 +177,22 @@ public class Player extends Application{
 	
 		queFour.setOnAction(e->{
 			   ansCho="4";
-			   
+			   if(score1 == 3) {
+					ask.setText("Congradulations you got all the right answers");
+					ans = "1";
+				}
 			   if(ans.equals(ansCho)) {
 				   score1++;
-        		   System.out.println("wooo");
     			   disScore.setText(new Integer(score1).toString());
     			   num = num-1;
     			   ask.setText(r[num].substring(p+1).replace("$", ""));
     			   ans = r[num].substring(p, p+1).toString();
+        	   }else {
+        		   num = num-1;
+    			   ask.setText(r[num].substring(p+1).replace("$", ""));
+    			   ans = r[num].substring(p, p+1).toString();
         	   }
+	          
 	           
 		});			
 		grid.add(queFour, 3, 3);
